@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
+
+  <meta name="theme-color" content="#080808">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta
+    name="apple-mobile-web-app-status-bar-style"
+    content="black-translucent"
+  >
+  <meta
+    name="apple-mobile-web-app-title"
+    content="SPGS Draw"
+  >
+
+  <title>SPGS Number Draw</title>
+
+  <style>
+    :root {
+      --black: #080808;
+      --panel: #141414;
+      --panel-light: #202020;
+      --gold: #d99a1b;
+      --gold-light: #ffc64a;
+      --red: #c7151b;
+      --white: #f5f5f5;
+      --gray: #9b9b9b;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      min-height: 100%;
+      margin: 0;
+    }
+
+    body {
+      background:
+        radial-gradient(
+          circle at top,
+          #2a2110 0%,
+          #101010 34%,
+          #050505 72%
+        );
+      color: var(--white);
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding:
+        max(24px, env(safe-area-inset-top))
+        18px
+        max(24px, env(safe-area-inset-bottom));
+    }
+
+    .app {
+      width: 100%;
+      max-width: 430px;
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .brand-badge {
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 12px;
+      border: 3px solid var(--gold);
+      border-radius: 24px;
+      display: grid;
+      place-items: center;
+      background:
+        linear-gradient(
+          145deg,
+          #242424,
+          #090909
+        );
+      box-shadow:
+        0 0 30px rgba(217, 154, 27, 0.22),
+        inset 0 0 18px rgba(255, 255, 255, 0.04);
+    }
+
+    .brand-badge span {
+      font-size: 27px;
+      font-weight: 950;
+      letter-spacing: -2px;
+    }
+
+    h1 {
+      font-size: 30px;
+      line-height: 1;
+      margin: 0;
+      font-weight: 950;
+      letter-spacing: -1px;
+    }
+
+    .subtitle {
+      margin: 8px 0 0;
+      color: var(--gold-light);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .card {
+      border: 1px solid #333;
+      border-radius: 28px;
+      padding: 22px;
+      background:
+        linear-gradient(
+          145deg,
+          rgba(31, 31, 31, 0.97),
+          rgba(12, 12, 12, 0.98)
+        );
+      box-shadow:
+        0 22px 70px rgba(0, 0, 0, 0.55),
+        inset 0 1px rgba(255, 255, 255, 0.04);
+    }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: end;
+      gap: 12px;
+    }
+
+    .input-group label {
+      display: block;
+      margin: 0 0 8px 2px;
+      color: var(--gray);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    input {
+      width: 100%;
+      height: 58px;
+      border: 1px solid #454545;
+      border-radius: 14px;
+      outline: none;
+      background: #090909;
+      color: var(--white);
+      font-size: 24px;
+      font-weight: 850;
+      text-align: center;
+      appearance: textfield;
+    }
+
+    input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(217, 154, 27, 0.15);
+    }
+
+    input::-webkit-inner-spin-button,
+    input::-webkit-outer-spin-button {
+      appearance: none;
+      margin: 0;
+    }
+
+    .dash {
+      padding-bottom: 17px;
+      color: var(--gray);
+      font-size: 26px;
+      font-weight: 800;
+    }
+
+    .result-panel {
+      min-height: 260px;
+      margin: 22px 0;
+      border: 1px solid #363636;
+      border-radius: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+      background:
+        radial-gradient(
+          circle,
+          rgba(217, 154, 27, 0.12),
+          rgba(8, 8, 8, 0.96) 65%
+        );
+    }
+
+    .result-panel::before {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border: 1px solid rgba(217, 154, 27, 0.18);
+      border-radius: 50%;
+    }
+
+    .result-label {
+      position: relative;
+      color: var(--gray);
+      font-size: 13px;
+      font-weight: 850;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+    }
+
+    .result {
+      position: relative;
+      margin: 8px 0 2px;
+      color: var(--gold-light);
+      font-size: 118px;
+      line-height: 1;
+      font-weight: 950;
+      letter-spacing: -6px;
+      text-shadow:
+        0 0 20px rgba(255, 198, 74, 0.24),
+        0 7px 0 rgba(0, 0, 0, 0.4);
+    }
+
+    .range-text {
+      position: relative;
+      color: #777;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    button {
+      width: 100%;
+      min-height: 64px;
+      border: 0;
+      border-radius: 16px;
+      cursor: pointer;
+      color: #100c03;
+      background:
+        linear-gradient(
+          180deg,
+          var(--gold-light),
+          var(--gold)
+        );
+      font-size: 18px;
+      font-weight: 950;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      box-shadow:
+        0 12px 24px rgba(217, 154, 27, 0.2),
+        inset 0 1px rgba(255, 255, 255, 0.35);
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.58;
+    }
+
+    .status {
+      min-height: 20px;
+      margin: 14px 0 0;
+      text-align: center;
+      color: var(--gray);
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .error {
+      color: #ff6767;
+    }
+
+    .winner {
+      animation: winnerReveal 0.65s ease-out;
+    }
+
+    @keyframes winnerReveal {
+      0% {
+        opacity: 0;
+        transform: scale(0.4) rotate(-8deg);
+      }
+
+      65% {
+        opacity: 1;
+        transform: scale(1.12) rotate(2deg);
+      }
+
+      100% {
+        transform: scale(1) rotate(0);
+      }
+    }
+
+    .footer {
+      margin-top: 17px;
+      text-align: center;
+      color: #666;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    @media (max-height: 700px) {
+      .brand-badge {
+        width: 70px;
+        height: 70px;
+      }
+
+      .brand-badge span {
+        font-size: 22px;
+      }
+
+      h1 {
+        font-size: 25px;
+      }
+
+      .result-panel {
+        min-height: 190px;
+      }
+
+      .result {
+        font-size: 88px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app">
+    <header class="brand">
+      <div class="brand-badge">
+        <span>SPGS</span>
+      </div>
+
+      <h1>Number Draw</h1>
+      <p class="subtitle">Fuel the Game</p>
+    </header>
+
+    <section class="card">
+      <div class="input-row">
+        <div class="input-group">
+          <label for="minimum">Minimum</label>
+          <input
+            id="minimum"
+            type="number"
+            value="1"
+            inputmode="numeric"
+          >
+        </div>
+
+        <div class="dash">–</div>
+
+        <div class="input-group">
+          <label for="maximum">Maximum</label>
+          <input
+            id="maximum"
+            type="number"
+            value="9"
+            inputmode="numeric"
+          >
+        </div>
+      </div>
+
+      <div class="result-panel">
+        <div class="result-label" id="resultLabel">
+          Ready to draw
+        </div>
+
+        <div class="result" id="result">—</div>
+
+        <div class="range-text" id="rangeText">
+          Select your range above
+        </div>
+      </div>
+
+      <button id="drawButton" type="button">
+        Draw Number
+      </button>
+
+      <p class="status" id="status">
+        Each number has an equal chance.
+      </p>
+    </section>
+
+    <footer class="footer">
+      Slowpitch Gas Station • EST 2025
+    </footer>
+  </main>
+
+  <script>
+    const minimumInput = document.getElementById("minimum");
+    const maximumInput = document.getElementById("maximum");
+    const drawButton = document.getElementById("drawButton");
+    const result = document.getElementById("result");
+    const resultLabel = document.getElementById("resultLabel");
+    const rangeText = document.getElementById("rangeText");
+    const status = document.getElementById("status");
+
+    let drawing = false;
+
+    function secureRandomInteger(min, max) {
+      const range = max - min + 1;
+
+      if (!Number.isSafeInteger(min) ||
+          !Number.isSafeInteger(max) ||
+          range <= 0) {
+        throw new Error("Invalid number range.");
+      }
+
+      const maximumUint32 = 0x100000000;
+      const acceptableLimit =
+        Math.floor(maximumUint32 / range) * range;
+
+      const randomValues = new Uint32Array(1);
+      let randomNumber;
+
+      do {
+        crypto.getRandomValues(randomValues);
+        randomNumber = randomValues[0];
+      } while (randomNumber >= acceptableLimit);
+
+      return min + (randomNumber % range);
+    }
+
+    function validateRange() {
+      const min = Number(minimumInput.value);
+      const max = Number(maximumInput.value);
+
+      if (!Number.isSafeInteger(min) ||
+          !Number.isSafeInteger(max)) {
+        throw new Error("Enter whole numbers only.");
+      }
+
+      if (min < 0 || max < 0) {
+        throw new Error("Numbers cannot be negative.");
+      }
+
+      if (max < min) {
+        throw new Error(
+          "Maximum must be greater than or equal to minimum."
+        );
+      }
+
+      if (max - min > 1000000) {
+        throw new Error("Please use a smaller number range.");
+      }
+
+      return { min, max };
+    }
+
+    function setError(message) {
+      status.textContent = message;
+      status.classList.add("error");
+    }
+
+    function clearError() {
+      status.classList.remove("error");
+    }
+
+    function vibrate(pattern) {
+      if ("vibrate" in navigator) {
+        navigator.vibrate(pattern);
+      }
+    }
+
+    async function drawNumber() {
+      if (drawing) return;
+
+      clearError();
+
+      let range;
+
+      try {
+        range = validateRange();
+      } catch (error) {
+        setError(error.message);
+        vibrate(150);
+        return;
+      }
+
+      drawing = true;
+      drawButton.disabled = true;
+      minimumInput.disabled = true;
+      maximumInput.disabled = true;
+
+      result.classList.remove("winner");
+      resultLabel.textContent = "Drawing";
+      status.textContent = "Randomizing…";
+      rangeText.textContent =
+        `Range: ${range.min} through ${range.max}`;
+
+      const animationDuration = 2200;
+      const animationInterval = 70;
+      const startTime = performance.now();
+
+      const animation = setInterval(() => {
+        result.textContent =
+          secureRandomInteger(range.min, range.max);
+
+        if (performance.now() - startTime >= animationDuration) {
+          clearInterval(animation);
+
+          const winningNumber =
+            secureRandomInteger(range.min, range.max);
+
+          result.textContent = winningNumber;
+          resultLabel.textContent = "Winning Number";
+          status.textContent =
+            `Draw completed at ${new Date().toLocaleTimeString(
+              [],
+              {
+                hour: "numeric",
+                minute: "2-digit",
+                second: "2-digit"
+              }
+            )}`;
+
+          void result.offsetWidth;
+          result.classList.add("winner");
+
+          vibrate([75, 50, 150]);
+
+          drawButton.textContent = "Draw Again";
+          drawButton.disabled = false;
+          minimumInput.disabled = false;
+          maximumInput.disabled = false;
+          drawing = false;
+        }
+      }, animationInterval);
+    }
+
+    drawButton.addEventListener("click", drawNumber);
+
+    maximumInput.addEventListener("keydown", event => {
+      if (event.key === "Enter") {
+        drawNumber();
+      }
+    });
+  </script>
+</body>
+</html>
