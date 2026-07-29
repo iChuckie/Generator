@@ -104,6 +104,181 @@ input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{appearance:non
 @media(max-height:760px){
   .logo{width:150px} .title h1{font-size:24px} .result{min-height:190px} .number{font-size:88px}
 }
+
+/* Compact recording layout: keeps the complete app visible on an iPhone screen */
+html, body {
+  height: 100%;
+  min-height: 100%;
+}
+
+body {
+  align-items: flex-start;
+  padding:
+    max(6px, env(safe-area-inset-top))
+    12px
+    max(6px, env(safe-area-inset-bottom));
+}
+
+.app {
+  max-width: 420px;
+}
+
+.logo-wrap {
+  margin-bottom: 2px;
+}
+
+.logo {
+  width: min(150px, 39vw);
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,.5));
+}
+
+.title {
+  margin-top: -2px;
+}
+
+.title h1 {
+  font-size: 25px;
+  line-height: 1;
+}
+
+.title p {
+  margin: 4px 0 9px;
+  font-size: 10px;
+  letter-spacing: 3px;
+}
+
+.card {
+  padding: 13px;
+  border-radius: 21px;
+}
+
+.range-row {
+  gap: 10px;
+}
+
+.group label {
+  margin-bottom: 5px;
+  font-size: 10px;
+}
+
+input {
+  height: 50px;
+  font-size: 24px;
+}
+
+.sep {
+  padding-bottom: 12px;
+}
+
+.draw-btn,
+.again-btn {
+  min-height: 52px;
+  margin-top: 11px;
+  font-size: 17px;
+}
+
+.result {
+  min-height: 188px;
+  margin-top: 11px;
+  border-radius: 18px;
+}
+
+.result-label {
+  font-size: 12px;
+}
+
+.number {
+  font-size: 88px;
+  margin: 3px 0 1px;
+}
+
+.range-copy {
+  font-size: 12px;
+}
+
+.meta {
+  gap: 7px;
+  margin-top: 8px;
+  font-size: 10px;
+}
+
+.pill {
+  padding: 8px 7px;
+}
+
+.small-note {
+  margin: 7px 0 0;
+  font-size: 10px;
+}
+
+.footer {
+  margin-top: 8px;
+  font-size: 9px;
+  letter-spacing: 1.7px;
+}
+
+/* Smaller iPhones and browser views */
+@media (max-height: 740px) {
+  body {
+    padding-top: max(3px, env(safe-area-inset-top));
+    padding-bottom: 3px;
+  }
+
+  .logo {
+    width: 105px;
+  }
+
+  .title h1 {
+    font-size: 21px;
+  }
+
+  .title p {
+    margin-bottom: 6px;
+    font-size: 9px;
+  }
+
+  .card {
+    padding: 10px;
+  }
+
+  input {
+    height: 44px;
+    font-size: 21px;
+  }
+
+  .draw-btn,
+  .again-btn {
+    min-height: 46px;
+    margin-top: 8px;
+    font-size: 15px;
+  }
+
+  .result {
+    min-height: 152px;
+    margin-top: 8px;
+  }
+
+  .number {
+    font-size: 70px;
+  }
+
+  .meta {
+    margin-top: 6px;
+  }
+
+  .pill {
+    padding: 6px 5px;
+  }
+
+  .small-note {
+    margin-top: 5px;
+  }
+
+  .footer {
+    display: none;
+  }
+}
+
 </style>
 </head>
 <body>
